@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Start/stop tradfrid
+#
+
+DAEMON=/usr/bin/tradfrid
+PIDFILE=/var/run/tradfrid.pid
+
+case "$1" in
+  start)
+	echo "Starting tradfrid..."
+	start-stop-daemon -S -x "$DAEMON" -p "$PIDFILE" 
+	;;
+  stop)
+	echo "Stopping tradfrid..."
+	start-stop-daemon -K -x "$DAEMON" -p "$PIDFILE" -o
+	;;
+  reload|force-reload)
+	echo "Reloading tradfrid configuration..."
+	"$DAEMON" -s reload
+	;;
+  restart)
+	"$0" stop
+	sleep 1 # Prevent race condition: ensure tradfrid stops before start.
+	"$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|reload|force-reload}"
+	exit 1
+esac

@@ -12,6 +12,11 @@ TRADFRID_BUILD_TARGETS = cmd/tradfrid cmd/tradfri
 
 TRADFIRD_INSTALL_BINS = tradfrid tradfri
 
+define TRADFRID_INSTALL_INIT_SYSV
+	$(INSTALL) -m 755 -D package/tradfrid/S51tradfrid \
+		$(TARGET_DIR)/etc/init.d/S51tradfrid
+endef
+
 TRADFRID_TAGS = cgo static_build
 
 # Set GO111MODULE=on because I'm not going to spend time trying to package every
